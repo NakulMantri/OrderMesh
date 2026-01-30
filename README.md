@@ -60,6 +60,3 @@ During load testing, the **Analytics Service** reported the following performanc
 - **Baseline Throughput**: ~990 - 1000 messages/second.
 - **Rebalancing**: Verified by stopping/starting consumer instances; Kafka successfully redistributed partitions across the remaining healthy members of the consumer group.
 - **DLQ Recovery**: Failed inventory checks are immediately visible in the `dlq-logger` logs.
-
-## 📜 License
-This project is for educational and portfolio purposes.
