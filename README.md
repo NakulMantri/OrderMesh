@@ -60,3 +60,18 @@ During load testing, the **Analytics Service** reported the following performanc
 - **Baseline Throughput**: ~990 - 1000 messages/second.
 - **Rebalancing**: Verified by stopping/starting consumer instances; Kafka successfully redistributed partitions across the remaining healthy members of the consumer group.
 - **DLQ Recovery**: Failed inventory checks are immediately visible in the `dlq-logger` logs.
+
+### Proof of Work: Live System Logs
+The logs below demonstrate the system catching inventory validation failures and automatically routing them to the Dead Letter Queue for observability:
+
+```text
+inventory-1   | 2026-01-30 06:18:42,038 - __main__ - ERROR - Inventory validation failed for order 54ab231c-37bb-4ca2-9342-3f896ec41492, routing to DLQ
+dlq-logger-1  | 2026-01-30 06:18:42,038 - __main__ - CRITICAL - DLQ ALERT: Received failed order event: {'order_id': '54ab231c-37bb-4ca2-9342-3f896ec41492', 'user_id': 'user_941', 'items': [{'product_id': 'prod_7', 'quantity': 2}], 'total_amount': 343.04, 'timestamp': 1769753922.0145404, 'failure_reason': 'OUT_OF_STOCK_SIMULATED'}
+inventory-1   | 2026-01-30 06:18:42,039 - __main__ - ERROR - Inventory validation failed for order 55aaa9c0-7a53-47e5-8f84-c02130783740, routing to DLQ
+dlq-logger-1  | 2026-01-30 06:18:42,039 - __main__ - CRITICAL - DLQ ALERT: Received failed order event: {'order_id': '55aaa9c0-7a53-47e5-8f84-c02130783740', 'user_id': 'user_666', 'items': [{'product_id': 'prod_35', 'quantity': 1}], 'total_amount': 171.04, 'timestamp': 1769753922.0136235, 'failure_reason': 'OUT_OF_STOCK_SIMULATED'}
+inventory-1   | 2026-01-30 06:18:44,076 - __main__ - ERROR - Inventory validation failed for order 38e39a5c-007a-438f-b3ce-33868df75401, routing to DLQ
+dlq-logger-1  | 2026-01-30 06:18:44,076 - __main__ - CRITICAL - DLQ ALERT: Received failed order event: {'order_id': '38e39a5c-007a-438f-b3ce-33868df75401', 'user_id': 'user_797', 'items': [{'product_id': 'prod_89', 'quantity': 1}], 'total_amount': 195.14, 'timestamp': 1769753924.050372, 'failure_reason': 'OUT_OF_STOCK_SIMULATED'}
+```
+
+## 📜 License
+This project is for educational and portfolio purposes.
